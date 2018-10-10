@@ -5,10 +5,12 @@ class AddCommentForm extends Component {
     super(props);
 
     this.state = {
-      commentText: ''
+      commentText: '',
+      error: null
     };
 
     this.onTextChange = this.onTextChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   onTextChange(e) {
@@ -19,12 +21,35 @@ class AddCommentForm extends Component {
     this.setState(newState);
   }
 
+  onSubmit(e) {
+    e.preventDefault();
+
+    fetch('/comments/add', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ author: "Jake", commentText: this.state.commentText })
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (!res.success) this.setState({ error: res.error });
+        else this.setState({ commentText: '', error: null });
+      });
+  }
+
   render() {
     return (
       <div className="comment-form">
-        <form>
-          <input type="text" onChange={this.onTextChange} />
-          <button className="submit-button">Submit Comment</button>
+        <form onSubmit={this.onSubmit}>
+          <input
+            type="text"
+            value={this.state.commentText}
+            onChange={this.onTextChange} />
+          <button
+            type="submit"
+            className="submit-button">Submit Comment</button>
         </form>
       </div>
     );

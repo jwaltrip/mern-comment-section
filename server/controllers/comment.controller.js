@@ -17,15 +17,24 @@ exports.comment_get_all = function (req, res) {
 
 // callback function for the POST '/add' route
 exports.comment_add = function (req, res) {
-  const comment = new Comment({
-    commentText: "Static test comment inserted into DB",
-    author: "Jake"
-  });
+  const comment = new Comment();
+  // get author and commentText from url body
+  const { author, commentText } = req.body;
+  // if either author or commentText is not present, res w error
+  if (!author || !commentText) {
+    return res.json({
+      success: false,
+      error: "You must provide an author and commentText"
+    });
+  }
+
+  comment.author = author;
+  comment.commentText = commentText;
 
   comment.save(err => {
     if (err) return next(err);
 
-    res.send('Product created successfully');
+    return res.json({ success: true });
   })
 };
 
