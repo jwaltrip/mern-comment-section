@@ -6,10 +6,12 @@ class AddCommentForm extends Component {
 
     this.state = {
       commentText: '',
+      author: '',
       error: null
     };
 
     this.onTextChange = this.onTextChange.bind(this);
+    this.onAuthorChange = this.onAuthorChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
@@ -18,6 +20,14 @@ class AddCommentForm extends Component {
 
     const newState = {...this.state};
     newState.commentText = e.target.value;
+    this.setState(newState);
+  }
+
+  onAuthorChange(e) {
+    e.preventDefault();
+
+    const newState = {...this.state};
+    newState.author = e.target.value;
     this.setState(newState);
   }
 
@@ -30,12 +40,12 @@ class AddCommentForm extends Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ author: "Jake", commentText: this.state.commentText })
+      body: JSON.stringify({ author: this.state.author, commentText: this.state.commentText })
     })
       .then(res => res.json())
       .then(res => {
         if (!res.success) this.setState({ error: res.error });
-        else this.setState({ commentText: '', error: null });
+        else this.setState({ author: '', commentText: '', error: null });
       });
   }
 
@@ -45,6 +55,12 @@ class AddCommentForm extends Component {
         <form onSubmit={this.onSubmit}>
           <input
             type="text"
+            placeholder="Author"
+            value={this.state.author}
+            onChange={this.onAuthorChange} />
+          <input
+            type="text"
+            placeholder="Comment"
             value={this.state.commentText}
             onChange={this.onTextChange} />
           <button
