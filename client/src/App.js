@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Customers from "./components/customers/customers";
+import CommentList from "./components/CommentSection/CommentList";
 
 class App extends Component {
   render() {
@@ -14,7 +14,7 @@ class App extends Component {
           </p>
         </header>
         <br/>
-        <Customers />
+        <CommentList/>
       </div>
     );
   }

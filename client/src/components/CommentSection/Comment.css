@@ -1,0 +1,23 @@
+.comment-container {
+  /*background-color: salmon;*/
+  width: 30%;
+  margin: auto;
+}
+
+.comment-list {
+  background-color: aquamarine;
+  width: 30%;
+  margin: auto;
+}
+
+.comment {
+  background-color: aliceblue;
+  margin-bottom: 15px;
+  text-align: left;
+  padding: 10px;
+  border-radius: 15px 15px 15px 15px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
