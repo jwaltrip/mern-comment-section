@@ -4,7 +4,10 @@ const Comment = (props) => {
   return (
     <div className="comment">
       <div className="comment-text">
-        Test comment 1
+        {props.commentText}
+      </div>
+      <div className="comment-author">
+        {props.author}
       </div>
     </div>
   );

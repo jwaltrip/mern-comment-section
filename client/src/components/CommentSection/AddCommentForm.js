@@ -24,7 +24,7 @@ class AddCommentForm extends Component {
       <div className="comment-form">
         <form>
           <input type="text" onChange={this.onTextChange} />
-          <button>Submit Comment</button>
+          <button className="submit-button">Submit Comment</button>
         </form>
       </div>
     );
