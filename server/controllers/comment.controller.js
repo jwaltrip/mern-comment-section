@@ -19,17 +19,18 @@ exports.comment_get_all = function (req, res) {
 exports.comment_add = function (req, res) {
   const comment = new Comment();
   // get author and commentText from url body
-  const { author, commentText } = req.body;
+  const { author, commentText, timestamp } = req.body;
   // if either author or commentText is not present, res w error
-  if (!author || !commentText) {
+  if (!author || !commentText || !timestamp) {
     return res.json({
       success: false,
-      error: "You must provide an author and commentText"
+      error: "You must provide an author, commentText, and timestamp"
     });
   }
 
   comment.author = author;
   comment.commentText = commentText;
+  comment.timestamp = timestamp;
 
   comment.save(err => {
     if (err) return next(err);

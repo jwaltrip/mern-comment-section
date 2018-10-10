@@ -48,6 +48,7 @@ class CommentList extends Component {
             return <Comment
                     key={comment.id}
                     commentText={comment.commentText}
+                    timestamp={comment.timestamp}
                     author={comment.author}
                   />
           })}

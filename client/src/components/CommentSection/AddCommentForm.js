@@ -40,7 +40,11 @@ class AddCommentForm extends Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ author: this.state.author, commentText: this.state.commentText })
+      body: JSON.stringify({
+        author: this.state.author,
+        commentText: this.state.commentText,
+        timestamp: Date.now()
+      })
     })
       .then(res => res.json())
       .then(res => {
