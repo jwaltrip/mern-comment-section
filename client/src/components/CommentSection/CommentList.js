@@ -46,7 +46,8 @@ class CommentList extends Component {
 
           {this.state.comments.map((comment, idx) => {
             return <Comment
-                    key={comment.id}
+                    key={comment.idx}
+                    id={comment._id}
                     commentText={comment.commentText}
                     timestamp={comment.timestamp}
                     author={comment.author}

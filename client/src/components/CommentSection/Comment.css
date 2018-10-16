@@ -51,6 +51,15 @@
   font-family: 'Raleway', sans-serif;
 }
 
+.comment-footer {
+  padding-top: 20px;
+}
+
+.comment-edit-form {
+  /*display: none;*/
+}
+
+
 .submit-button {
   -moz-box-shadow: 0px 0px 14px -1px #3e7327;
   -webkit-box-shadow: 0px 0px 14px -1px #3e7327;

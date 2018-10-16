@@ -50,11 +50,32 @@ exports.comment_details = function (req, res) {
 
 // callback function for the PUT update '/:id/update' route
 exports.comment_update = function (req, res) {
-  Comment.findByIdAndUpdate(req.params.id, {$set: req.body}, (err, comment) => {
+  const comment = new Comment();
+  // get author and commentText from url body
+  const { author, commentText, timestamp, id } = req.body;
+  // if either author or commentText is not present, res w error
+  if (!author || !commentText || !timestamp || !id) {
+    return res.json({
+      success: false,
+      error: "You must provide an author, commentText, and timestamp"
+    });
+  }
+
+  comment.author = author;
+  comment.commentText = commentText;
+  comment.timestamp = timestamp;
+
+  comment.findByIdAndUpdate(id, {$set: req.body}, (err, comment) => {
     if (err) return next(err);
 
-    res.send('Comment updated');
+    return res.json({ success: true });
   });
+
+  // Comment.findByIdAndUpdate(req.params.id, {$set: req.body}, (err, comment) => {
+  //   if (err) return next(err);
+  //
+  //   res.send('Comment updated');
+  // });
 };
 
 // callback fn for the DELETE '/:id/delete' route
