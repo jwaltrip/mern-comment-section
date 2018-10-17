@@ -71,8 +71,8 @@ exports.comment_update = function (req, res) {
 // callback fn for the DELETE '/:id/delete' route
 exports.comment_delete = function (req, res) {
   Comment.findByIdAndRemove(req.params.id, err => {
-    if (err) return next(err);
-
-    res.send('Comment deleted successfully!');
+    // if (err) return next(err);
+    if (err) return res.json({ success: false, error: err });
+    res.json({ success: true });
   })
 };

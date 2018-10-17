@@ -12,8 +12,9 @@ class Comment extends Component {
     };
 
     this.onTextChange = this.onTextChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+    this.onSubmitEdit = this.onSubmitEdit.bind(this);
     this.toggleEditFormDisplay = this.toggleEditFormDisplay.bind(this);
+    this.onSubmitDelete = this.onSubmitDelete.bind(this);
   }
 
   onTextChange(e) {
@@ -24,7 +25,7 @@ class Comment extends Component {
     this.setState(newState);
   }
 
-  onSubmit(e) {
+  onSubmitEdit(e) {
     e.preventDefault();
 
     fetch(`/comments/${this.props.id}/update`, {
@@ -43,6 +44,26 @@ class Comment extends Component {
       .then(res => {
         if (!res.success) this.setState({ error: res.error });
         else this.setState({ editText: '', showEditForm: false, error: null });
+      });
+  }
+
+  onSubmitDelete(e) {
+    e.preventDefault();
+
+    fetch(`/comments/${this.props.id}/delete`, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: this.props.id
+      })
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (!res.success) this.setState({ error: res.error });
+        else this.setState({ error: null });
       });
   }
 
@@ -76,7 +97,7 @@ class Comment extends Component {
         </div>
         <div className="comment-footer">
           <div className={editFormClass}>
-            <form onSubmit={this.onSubmit}>
+            <form onSubmit={this.onSubmitEdit}>
               <input type="text" value={this.state.editText} onChange={this.onTextChange} />
               <button type="submit">Edit</button>
             </form>
@@ -85,7 +106,7 @@ class Comment extends Component {
             <div className="comment-edit" onClick={this.toggleEditFormDisplay}>
               Edit
             </div>
-            <div className="comment-delete">
+            <div className="comment-delete" onClick={this.onSubmitDelete}>
               Delete
             </div>
           </div>
