@@ -56,9 +56,32 @@
 }
 
 .comment-edit-form {
-  /*display: none;*/
+  display: none;
 }
 
+.comment-edit-form.show {
+  display: block;
+}
+
+.footer-links {
+  display: flex;
+  font-family: 'Lato', sans-serif;
+  color: #0060a7;
+}
+
+.comment-edit,
+.comment-delete {
+  cursor: pointer;
+}
+
+.comment-edit:hover,
+.comment-delete:hover {
+  text-decoration: underline;
+}
+
+.comment-delete {
+  padding-left: 15px;
+}
 
 .submit-button {
   -moz-box-shadow: 0px 0px 14px -1px #3e7327;

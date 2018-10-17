@@ -57,25 +57,15 @@ exports.comment_update = function (req, res) {
   if (!commentText || !timestamp || !id) {
     return res.json({
       success: false,
-      error: "You must provide an editText, and timestamp"
+      error: "You must provide an commentText, timestamp, and id"
     });
   }
-
-  // comment.id = id;
-  // comment.editText = editText;
-  // comment.timestamp = timestamp;
 
   Comment.findOneAndUpdate({ _id: id }, {$set: req.body}, (err, comment) => {
     // if (err) return next(err);
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true });
   });
-
-  // Comment.findByIdAndUpdate(req.params.id, {$set: req.body}, (err, comment) => {
-  //   if (err) return next(err);
-  //
-  //   res.send('Comment updated');
-  // });
 };
 
 // callback fn for the DELETE '/:id/delete' route

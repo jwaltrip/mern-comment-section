@@ -7,11 +7,13 @@ class Comment extends Component {
 
     this.state = {
       editText: '',
-      error: null
+      error: null,
+      showEditForm: false
     };
 
     this.onTextChange = this.onTextChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.toggleEditFormDisplay = this.toggleEditFormDisplay.bind(this);
   }
 
   onTextChange(e) {
@@ -40,15 +42,24 @@ class Comment extends Component {
       .then(res => res.json())
       .then(res => {
         if (!res.success) this.setState({ error: res.error });
-        else this.setState({ editText: '', error: null });
+        else this.setState({ editText: '', showEditForm: false, error: null });
       });
+  }
+
+  toggleEditFormDisplay() {
+    const showEditForm = !this.state.showEditForm;
+    this.setState({ showEditForm: showEditForm });
   }
 
   render() {
     // convert timestamp to Moment.fromNow()
     const timestamp = Moment(this.props.timestamp).fromNow();
 
-
+    // logic to show/hide edit form
+    let editFormClass = 'comment-edit-form';
+    if (this.state.showEditForm) {
+      editFormClass = 'comment-edit-form show';
+    }
 
     return (
       <div className="comment">
@@ -64,14 +75,19 @@ class Comment extends Component {
           {this.props.commentText}
         </div>
         <div className="comment-footer">
-          <div className="comment-edit-form">
+          <div className={editFormClass}>
             <form onSubmit={this.onSubmit}>
               <input type="text" value={this.state.editText} onChange={this.onTextChange} />
               <button type="submit">Edit</button>
             </form>
           </div>
-          <div className="comment-edit">
-            Edit
+          <div className="footer-links">
+            <div className="comment-edit" onClick={this.toggleEditFormDisplay}>
+              Edit
+            </div>
+            <div className="comment-delete">
+              Delete
+            </div>
           </div>
         </div>
 
