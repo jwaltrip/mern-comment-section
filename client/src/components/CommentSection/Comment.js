@@ -26,14 +26,14 @@ class Comment extends Component {
     e.preventDefault();
 
     fetch(`/comments/${this.props.id}/update`, {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         id: this.props.id,
-        editText: this.state.editText,
+        commentText: this.state.editText,
         timestamp: Date.now()
       })
     })

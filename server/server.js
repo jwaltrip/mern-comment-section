@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 //import comments route
 const comment = require('./routes/comment.route');
@@ -20,6 +21,9 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 // setup body parser middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// use cors middleware
+app.use(cors());
 
 // setup comments route thats connected with mongo
 app.use('/comments', comment);
