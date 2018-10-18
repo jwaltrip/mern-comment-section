@@ -1,0 +1,87 @@
+.card {
+  /*margin: auto;*/
+}
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  width: 500px;
+  margin: auto;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+}
+
+.card-left {
+  flex: 1 0 75px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-right {
+  flex: 7 0 300px;
+  /*background-color: #72b352;*/
+}
+
+.avatar {
+  background-image: url("http://i.pravatar.cc/75");
+  border-radius: 50%;
+  width: 75px;
+  height: 75px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+}
+
+.author {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 600;
+}
+
+.username-timestamp {
+  font-size: 0.9rem;
+  padding-left: 10px;
+  font-family: 'Lato', sans-serif;
+}
+
+.header-left {
+  margin-left: 5px;
+}
+
+.header-right {
+  margin: 0 5px 0 auto;
+}
+
+.card-text {
+  text-align: left;
+  padding: 5px;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 400;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-around;
+  width: 75%;
+  padding: 5px;
+}
+
+.card-footer div {
+  padding-left: 5px;
+  font-size: 0.9rem;
+}
+
+.card-footer div i {
+  padding-right: 7px;
+  cursor: pointer;
+}
+
+.retweets.clicked {
+  color: green;
+}
+
+.likes.clicked {
+  color: red;
+}
