@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Moment from 'moment';
 
 import './SocialCard.css';
 
@@ -8,21 +9,33 @@ class SocialCard extends Component {
 
     this.state = {
       retweetClicked: false,
-      likeClicked: false
+      likeClicked: false,
+      numComments: this.getRandomInt(0, 100),
+      numRetweets: this.getRandomInt(0, 100),
+      numLikes: this.getRandomInt(0, 100)
     };
 
     this.toggleRetweetIcon = this.toggleRetweetIcon.bind(this);
     this.toggleLikeIcon = this.toggleLikeIcon.bind(this);
+    this.getRandomInt = this.getRandomInt.bind(this);
   }
 
   toggleRetweetIcon() {
     const retweetClicked = !this.state.retweetClicked;
-    this.setState({ retweetClicked: retweetClicked });
+    if (this.state.retweetClicked) this.setState({ retweetClicked: retweetClicked, numRetweets: this.state.numRetweets-1 });
+    else this.setState({ retweetClicked: retweetClicked, numRetweets: this.state.numRetweets+1 });
+
   }
 
   toggleLikeIcon() {
     const likedClicked = !this.state.likeClicked;
-    this.setState({ likeClicked: likedClicked });
+    if (this.state.likeClicked) this.setState({ likeClicked: likedClicked, numLikes: this.state.numLikes-1 });
+    else this.setState({ likeClicked: likedClicked, numLikes: this.state.numLikes+1 });
+
+  }
+
+  getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   render() {
@@ -32,10 +45,11 @@ class SocialCard extends Component {
     if (this.state.retweetClicked) retweetClass = ' clicked';
     if (this.state.likeClicked) likedClass = ' clicked';
 
+    // convert timestamp to Moment.fromNow()
+    const timestamp = Moment(this.props.timestamp).fromNow();
 
     return (
       <div className="card">
-        <h2>Social Card</h2>
         <div className="card-container">
           <div className="card-left">
             <div className="avatar"> </div>
@@ -43,28 +57,28 @@ class SocialCard extends Component {
           <div className="card-right">
             <div className="card-header">
               <div className="header-left">
-                <span className="author">Jake Waltrip</span>
-                <span className="username-timestamp">@jwaltrip - Oct 17, 2018</span>
+                <span className="author">{this.props.author}</span>
+                <span className="username-timestamp">@jwaltrip - {timestamp}</span>
               </div>
               <div className="header-right">
                 <i className="fas fa-angle-down fa-2x"> </i>
               </div>
             </div>
 
-            <div className="card-text">Test Comment Text</div>
+            <div className="card-text">{this.props.commentText}</div>
 
             <div className="card-footer">
               <div className="comments">
                 <i className="far fa-comment"> </i>
-                2
+                {this.state.numComments}
               </div>
-              <div className={"retweets" + retweetClass} onClick={this.toggleRetweetIcon}>
-                <i className="fas fa-retweet"> </i>
-                49
+              <div className={"retweets" + retweetClass}>
+                <i className="fas fa-retweet" onClick={this.toggleRetweetIcon}> </i>
+                {this.state.numRetweets}
               </div>
-              <div className={"likes" + likedClass} onClick={this.toggleLikeIcon}>
-                <i className="fas fa-heart"> </i>
-                93
+              <div className={"likes" + likedClass}>
+                <i className="fas fa-heart" onClick={this.toggleLikeIcon}> </i>
+                {this.state.numLikes}
               </div>
               <div className="message">
                 <i className="far fa-envelope"> </i>

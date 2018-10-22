@@ -4,6 +4,7 @@ import './Comment.css';
 
 import Comment from "./Comment";
 import AddCommentForm from './AddCommentForm';
+import SocialCard from "./SocialCard";
 
 class CommentList extends Component {
   constructor(props) {
@@ -44,13 +45,26 @@ class CommentList extends Component {
         <h2>Comments</h2>
         <div className="comment-list">
 
-          {this.state.comments.map((comment, idx) => {
+          {/*this.state.comments.map((comment, idx) => {
             return <Comment
                     key={idx}
                     id={comment._id}
                     commentText={comment.commentText}
                     timestamp={comment.timestamp}
                     author={comment.author}
+                  />
+          })*/}
+
+          {this.state.comments.map((comment, idx) => {
+            return <SocialCard
+                    key={idx}
+                    id={comment._id}
+                    commentText={comment.commentText}
+                    timestamp={comment.timestamp}
+                    author={comment.author}
+                    numComments={this.numComments}
+                    numRetweets={this.numRetweets}
+                    numLikes={this.numLikes}
                   />
           })}
 
