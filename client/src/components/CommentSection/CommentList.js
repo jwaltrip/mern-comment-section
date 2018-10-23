@@ -59,6 +59,7 @@ class CommentList extends Component {
             return <SocialCard
                     key={idx}
                     id={comment._id}
+                    numComments={this.state.comments.length}
                     commentText={comment.commentText}
                     timestamp={comment.timestamp}
                     author={comment.author}

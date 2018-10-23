@@ -23,12 +23,12 @@
   /*background-color: #72b352;*/
 }
 
-.avatar {
-  background-image: url("http://i.pravatar.cc/75");
-  border-radius: 50%;
-  width: 75px;
-  height: 75px;
-}
+/*.avatar {*/
+  /*background-image: url("http://i.pravatar.cc/75");*/
+  /*border-radius: 50%;*/
+  /*width: 75px;*/
+  /*height: 75px;*/
+/*}*/
 
 .card-header {
   display: flex;

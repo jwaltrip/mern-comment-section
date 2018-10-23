@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import Moment from 'moment';
 
+const Dropdown = require('react-simple-dropdown');
+const DropdownTrigger = Dropdown.DropdownTrigger;
+const DropdownContent = Dropdown.DropdownContent;
+
 import './SocialCard.css';
+import Avatar from "./Avatar";
 
 class SocialCard extends Component {
   constructor(props) {
@@ -52,7 +57,7 @@ class SocialCard extends Component {
       <div className="card">
         <div className="card-container">
           <div className="card-left">
-            <div className="avatar"> </div>
+            <Avatar />
           </div>
           <div className="card-right">
             <div className="card-header">
