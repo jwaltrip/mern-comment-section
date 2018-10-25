@@ -1,5 +1,6 @@
 .card {
   /*margin: auto;*/
+  border: none!important;
 }
 
 .card-container {
@@ -16,6 +17,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  border-right: 1px solid rgba(0, 0, 0, 0.125);
 }
 
 .card-right {
@@ -44,16 +46,15 @@
 }
 
 .header-left {
-  margin-left: 5px;
 }
 
 .header-right {
-  margin: 0 5px 0 auto;
+  margin: 0 0 0 auto;
 }
 
 .card-text {
   text-align: left;
-  padding: 5px;
+  padding: 0.75rem 0.8rem;
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 400;
 }
@@ -61,8 +62,8 @@
 .card-footer {
   display: flex;
   justify-content: space-around;
-  width: 75%;
-  padding: 5px;
+  width: 100%;
+  padding: 5px 25% 5px 5px;
 }
 
 .card-footer div {
