@@ -146,7 +146,7 @@ class SocialCard extends Component {
             <div className="card-header">
               <div className="header-left">
                 <span className="author">{this.props.author}</span>
-                <span className="username-timestamp">@jwaltrip - {timestamp}</span>
+                <span className="username-timestamp">@{this.props.author.trim().toLowerCase()} - {timestamp}</span>
               </div>
               <div className="header-right">
                 <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDropdown} size="sm">
@@ -156,7 +156,7 @@ class SocialCard extends Component {
                     data-toggle="dropdown"
                     aria-expanded={this.state.dropdownOpen}
                   >
-                    <i className="fas fa-angle-down fa-2x"> </i>
+                    <i className="fas fa-angle-down"> </i>
                   </DropdownToggle>
                   <DropdownMenu>
                     <DropdownItem onClick={this.toggleEditForm}>Edit</DropdownItem>

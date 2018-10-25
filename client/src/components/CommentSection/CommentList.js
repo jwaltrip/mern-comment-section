@@ -45,16 +45,6 @@ class CommentList extends Component {
         <h2>Comments</h2>
         <div className="comment-list">
 
-          {/*this.state.comments.map((comment, idx) => {
-            return <Comment
-                    key={idx}
-                    id={comment._id}
-                    commentText={comment.commentText}
-                    timestamp={comment.timestamp}
-                    author={comment.author}
-                  />
-          })*/}
-
           {this.state.comments.map((comment, idx) => {
             return <SocialCard
                     key={idx}
@@ -69,7 +59,7 @@ class CommentList extends Component {
                   />
           })}
 
-          <AddCommentForm/>
+          <AddCommentForm />
         </div>
       </div>
     );
