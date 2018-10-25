@@ -83,3 +83,17 @@
 .likes.clicked {
   color: red;
 }
+
+.edit-form {
+  display: flex;
+  align-items: center;
+}
+
+.edit-form i {
+  padding-left: 15px;
+  color: red;
+}
+
+.edit-form i:hover {
+  cursor: pointer;
+}

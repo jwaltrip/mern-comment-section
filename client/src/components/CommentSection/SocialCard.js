@@ -19,7 +19,8 @@ class SocialCard extends Component {
       numLikes: this.getRandomInt(0, 100),
       dropdownOpen: false,
       isEditing: false,
-      editedText: ''
+      editedText: '',
+      error: null
     };
 
     this.toggleRetweetIcon = this.toggleRetweetIcon.bind(this);
@@ -27,6 +28,8 @@ class SocialCard extends Component {
     this.getRandomInt = this.getRandomInt.bind(this);
     this.toggleDropdown = this.toggleDropdown.bind(this);
     this.toggleEditForm = this.toggleEditForm.bind(this);
+    this.updateEditText = this.updateEditText.bind(this);
+    this.submitEditText = this.submitEditText.bind(this);
   }
 
   toggleRetweetIcon() {
@@ -53,6 +56,33 @@ class SocialCard extends Component {
     this.setState({ isEditing: !this.state.isEditing });
   }
 
+  updateEditText(e) {
+    e.preventDefault();
+    this.setState({ editedText: e.target.value });
+  }
+
+  submitEditText(e) {
+    e.preventDefault();
+
+    fetch(`/comments/${this.props.id}/update`, {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: this.props.id,
+        commentText: this.state.editedText,
+        timestamp: Date.now()
+      })
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (!res.success) this.setState({ error: res.error });
+        else this.setState({ editedText: '', isEditing: false, error: null });
+      });
+  }
+
   getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
@@ -72,14 +102,16 @@ class SocialCard extends Component {
     let commentTextBody = this.props.commentText;
     if (this.state.isEditing) {
       commentTextBody = <div className="edit-form">
-                          <form>
+                          <form onSubmit={this.submitEditText}>
                             <input
                               type="text"
                               placeholder={this.props.commentText}
                               value={this.state.editedText}
+                              onChange={this.updateEditText}
                             />
                             <button type="submit">Edit</button>
                           </form>
+                          <i className="fa fa-window-close" aria-hidden="true" onClick={this.toggleEditForm}> </i>
                         </div>;
     }
 
