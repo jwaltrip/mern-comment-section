@@ -14,7 +14,7 @@ class Avatar extends Component {
       .then(response => response.json())
       .then(user => {
         const newState = {...this.state};
-        newState.bg = `url('${user.results[0].picture.large}')`;
+        newState.bg = `url('${user.results[0].picture.medium}')`;
         this.setState(newState);
       });
   }
@@ -25,8 +25,8 @@ class Avatar extends Component {
         style={{
           backgroundImage: this.state.bg,
           borderRadius: '50%',
-          width: '75px',
-          height: '75px'
+          width: '72px',
+          height: '72px'
         }}>
       </div>
     );

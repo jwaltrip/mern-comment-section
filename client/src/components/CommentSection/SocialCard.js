@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import Moment from 'moment';
 
-const Dropdown = require('react-simple-dropdown');
-const DropdownTrigger = Dropdown.DropdownTrigger;
-const DropdownContent = Dropdown.DropdownContent;
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 import './SocialCard.css';
 import Avatar from "./Avatar";
@@ -17,12 +15,14 @@ class SocialCard extends Component {
       likeClicked: false,
       numComments: this.getRandomInt(0, 100),
       numRetweets: this.getRandomInt(0, 100),
-      numLikes: this.getRandomInt(0, 100)
+      numLikes: this.getRandomInt(0, 100),
+      dropdownOpen: false
     };
 
     this.toggleRetweetIcon = this.toggleRetweetIcon.bind(this);
     this.toggleLikeIcon = this.toggleLikeIcon.bind(this);
     this.getRandomInt = this.getRandomInt.bind(this);
+    this.toggleDropdown = this.toggleDropdown.bind(this);
   }
 
   toggleRetweetIcon() {
@@ -37,6 +37,12 @@ class SocialCard extends Component {
     if (this.state.likeClicked) this.setState({ likeClicked: likedClicked, numLikes: this.state.numLikes-1 });
     else this.setState({ likeClicked: likedClicked, numLikes: this.state.numLikes+1 });
 
+  }
+
+  toggleDropdown() {
+    this.setState(prevState => ({
+      dropdownOpen: !prevState.dropdownOpen
+    }));
   }
 
   getRandomInt(min, max) {
@@ -66,7 +72,19 @@ class SocialCard extends Component {
                 <span className="username-timestamp">@jwaltrip - {timestamp}</span>
               </div>
               <div className="header-right">
-                <i className="fas fa-angle-down fa-2x"> </i>
+                {/*<i className="fas fa-angle-down fa-2x"> </i>*/}
+                <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDropdown}>
+                  <DropdownToggle caret>
+                    Drop
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    <DropdownItem header>Header</DropdownItem>
+                    <DropdownItem disabled>Action</DropdownItem>
+                    <DropdownItem>Another Action</DropdownItem>
+                    <DropdownItem divider />
+                    <DropdownItem>Another Action</DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
               </div>
             </div>
 
