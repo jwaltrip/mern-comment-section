@@ -30,6 +30,7 @@ class SocialCard extends Component {
     this.toggleEditForm = this.toggleEditForm.bind(this);
     this.updateEditText = this.updateEditText.bind(this);
     this.submitEditText = this.submitEditText.bind(this);
+    this.onSubmitDelete = this.onSubmitDelete.bind(this);
   }
 
   toggleRetweetIcon() {
@@ -83,6 +84,26 @@ class SocialCard extends Component {
       });
   }
 
+  onSubmitDelete(e) {
+    e.preventDefault();
+
+    fetch(`/comments/${this.props.id}/delete`, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: this.props.id
+      })
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (!res.success) this.setState({ error: res.error });
+        else this.setState({ error: null });
+      });
+  }
+
   getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
@@ -128,7 +149,6 @@ class SocialCard extends Component {
                 <span className="username-timestamp">@jwaltrip - {timestamp}</span>
               </div>
               <div className="header-right">
-                {/*<i className="fas fa-angle-down fa-2x"> </i>*/}
                 <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDropdown} size="sm">
                   <DropdownToggle
                     tag="span"
@@ -141,7 +161,7 @@ class SocialCard extends Component {
                   <DropdownMenu>
                     <DropdownItem onClick={this.toggleEditForm}>Edit</DropdownItem>
                     <DropdownItem divider />
-                    <DropdownItem>Delete</DropdownItem>
+                    <DropdownItem onClick={this.onSubmitDelete}>Delete</DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
               </div>
