@@ -94,6 +94,7 @@
   color: red;
 }
 
-.edit-form i:hover {
+.edit-form i:hover,
+.edit-menu:hover {
   cursor: pointer;
 }

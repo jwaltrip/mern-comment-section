@@ -156,7 +156,7 @@ class SocialCard extends Component {
                     data-toggle="dropdown"
                     aria-expanded={this.state.dropdownOpen}
                   >
-                    <i className="fas fa-angle-down"> </i>
+                    <i className="fas fa-angle-down edit-menu"> </i>
                   </DropdownToggle>
                   <DropdownMenu>
                     <DropdownItem onClick={this.toggleEditForm}>Edit</DropdownItem>
