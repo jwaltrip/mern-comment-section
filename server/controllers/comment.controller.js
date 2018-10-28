@@ -16,20 +16,22 @@ exports.comment_get_all = function (req, res) {
 };
 
 // callback function for the POST '/add' route
+// TODO on add top level comment, increment parentCommentId +1
 exports.comment_add = function (req, res) {
   const comment = new Comment();
   // get author and commentText from url body
-  const { author, commentText, timestamp } = req.body;
+  const { author, commentText, posted, timestamp } = req.body;
   // if either author or commentText is not present, res w error
-  if (!author || !commentText || !timestamp) {
+  if (!author || !commentText || !posted || !timestamp) {
     return res.json({
       success: false,
-      error: "You must provide an author, commentText, and timestamp"
+      error: "You must provide an author, commentText, posted, and timestamp"
     });
   }
 
   comment.author = author;
   comment.commentText = commentText;
+  comment.posted = posted;
   comment.timestamp = timestamp;
 
   comment.save(err => {
@@ -38,6 +40,8 @@ exports.comment_add = function (req, res) {
     return res.json({ success: true });
   })
 };
+
+// TODO create comment_add_reply route
 
 // callback function for the GET '/:id' route
 exports.comment_details = function (req, res) {
@@ -75,4 +79,24 @@ exports.comment_delete = function (req, res) {
     if (err) return res.json({ success: false, error: err });
     res.json({ success: true });
   })
+};
+
+// callback function for the PUT update '/:id/update' route
+exports.comment_update_likes = function (req, res) {
+  // const comment = new Comment();
+  // get author and commentText from url body
+  const { numLikes, id } = req.body;
+  // if either author or commentText is not present, res w error
+  if (!numLikes || !id) {
+    return res.json({
+      success: false,
+      error: "You must provide an commentText, timestamp, and id"
+    });
+  }
+
+  Comment.findOneAndUpdate({ _id: id }, {$inc: req.body}, (err, comment) => {
+    // if (err) return next(err);
+    if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true });
+  });
 };

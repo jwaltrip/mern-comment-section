@@ -43,6 +43,7 @@ class AddCommentForm extends Component {
       body: JSON.stringify({
         author: this.state.author,
         commentText: this.state.commentText,
+        posted: Date.now(),
         timestamp: Date.now()
       })
     })

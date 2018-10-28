@@ -19,6 +19,9 @@ router.post('/add', comment_controller.comment_add);
 // PUT - update a comment by id
 router.put('/:id/update', comment_controller.comment_update);
 
+// PUT - update comment likes
+router.put('/:id/like', comment_controller.comment_update_likes);
+
 // DELETE - delete a comment by id
 router.delete('/:id/delete', comment_controller.comment_delete);
 

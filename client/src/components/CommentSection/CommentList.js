@@ -55,7 +55,7 @@ class CommentList extends Component {
                     author={comment.author}
                     numComments={this.numComments}
                     numRetweets={this.numRetweets}
-                    numLikes={this.numLikes}
+                    numLikes={comment.numLikes}
                   />
           })}
 

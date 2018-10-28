@@ -16,7 +16,7 @@ class SocialCard extends Component {
       likeClicked: false,
       numComments: this.getRandomInt(0, 100),
       numRetweets: this.getRandomInt(0, 100),
-      numLikes: this.getRandomInt(0, 100),
+      numLikes: 0,
       dropdownOpen: false,
       isEditing: false,
       editedText: '',
@@ -33,6 +33,14 @@ class SocialCard extends Component {
     this.onSubmitDelete = this.onSubmitDelete.bind(this);
   }
 
+  componentDidMount() {
+    fetch(`/comments/${this.props.id}`)
+      .then(res => res.json())
+      .then(comment => {
+        this.setState({ numLikes: comment.numLikes });
+      });
+  }
+
   toggleRetweetIcon() {
     const retweetClicked = !this.state.retweetClicked;
     if (this.state.retweetClicked) this.setState({ retweetClicked: retweetClicked, numRetweets: this.state.numRetweets-1 });
@@ -42,8 +50,44 @@ class SocialCard extends Component {
 
   toggleLikeIcon() {
     const likedClicked = !this.state.likeClicked;
-    if (this.state.likeClicked) this.setState({ likeClicked: likedClicked, numLikes: this.state.numLikes-1 });
-    else this.setState({ likeClicked: likedClicked, numLikes: this.state.numLikes+1 });
+
+    // increment numLikes in DB +1 if NOT likeClicked
+    if (this.state.likeClicked) {
+      fetch(`/comments/${this.props.id}/like`, {
+        method: 'PUT',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: this.props.id,
+          numLikes: -1
+        })
+      })
+        .then(res => res.json())
+        .then(res => {
+          if (!res.success) this.setState({ error: res.error });
+          else this.setState({ likeClicked: likedClicked, numLikes: this.state.numLikes-1, error: null });
+        });
+    } else {
+
+      fetch(`/comments/${this.props.id}/like`, {
+        method: 'PUT',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: this.props.id,
+          numLikes: 1
+        })
+      })
+        .then(res => res.json())
+        .then(res => {
+          if (!res.success) this.setState({ error: res.error });
+          else this.setState({ likeClicked: likedClicked, numLikes: this.state.numLikes+1, error: null });
+        });
+    }
 
   }
 
@@ -180,7 +224,7 @@ class SocialCard extends Component {
               </div>
               <div className={"likes" + likedClass}>
                 <i className="fas fa-heart" onClick={this.toggleLikeIcon}> </i>
-                {this.state.numLikes}
+                {this.props.numLikes}
               </div>
               <div className="message">
                 <i className="far fa-envelope"> </i>
