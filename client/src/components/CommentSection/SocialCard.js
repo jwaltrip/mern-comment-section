@@ -49,45 +49,28 @@ class SocialCard extends Component {
   }
 
   toggleLikeIcon() {
+    // toggle the likedClicked boolean
     const likedClicked = !this.state.likeClicked;
 
     // increment numLikes in DB +1 if NOT likeClicked
-    if (this.state.likeClicked) {
-      fetch(`/comments/${this.props.id}/like`, {
-        method: 'PUT',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          id: this.props.id,
-          numLikes: -1
-        })
-      })
-        .then(res => res.json())
-        .then(res => {
-          if (!res.success) this.setState({ error: res.error });
-          else this.setState({ likeClicked: likedClicked, numLikes: this.state.numLikes-1, error: null });
-        });
-    } else {
+    const numLikesInc = (!this.state.likeClicked) ? 1 : -1;
 
-      fetch(`/comments/${this.props.id}/like`, {
-        method: 'PUT',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          id: this.props.id,
-          numLikes: 1
-        })
+    fetch(`/comments/${this.props.id}/like`, {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: this.props.id,
+        numLikes: numLikesInc
       })
-        .then(res => res.json())
-        .then(res => {
-          if (!res.success) this.setState({ error: res.error });
-          else this.setState({ likeClicked: likedClicked, numLikes: this.state.numLikes+1, error: null });
-        });
-    }
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (!res.success) this.setState({ error: res.error });
+        else this.setState({ likeClicked: likedClicked, numLikes: this.state.numLikes+numLikesInc, error: null });
+      });
 
   }
 
