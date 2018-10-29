@@ -20,6 +20,7 @@ class SocialCard extends Component {
       dropdownOpen: false,
       isEditing: false,
       editedText: '',
+      showCommentReply: false,
       error: null
     };
 
@@ -28,6 +29,7 @@ class SocialCard extends Component {
     this.getRandomInt = this.getRandomInt.bind(this);
     this.toggleDropdown = this.toggleDropdown.bind(this);
     this.toggleEditForm = this.toggleEditForm.bind(this);
+    this.toggleReplyForm = this.toggleReplyForm.bind(this);
     this.updateEditText = this.updateEditText.bind(this);
     this.submitEditText = this.submitEditText.bind(this);
     this.onSubmitDelete = this.onSubmitDelete.bind(this);
@@ -87,6 +89,10 @@ class SocialCard extends Component {
 
   toggleEditForm() {
     this.setState({ isEditing: !this.state.isEditing });
+  }
+
+  toggleReplyForm() {
+    this.setState({ showCommentReply: !this.state.showCommentReply });
   }
 
   updateEditText(e) {
@@ -159,7 +165,11 @@ class SocialCard extends Component {
       timestamp = "updated " + fromNow;
     }
 
-
+    //  logic to show/hide reply box
+    let showReply = '';
+    if (this.state.showCommentReply) {
+      showReply = ' show';
+    }
 
     // logic to check if comment is being edited
     // if so, show input form, if not, show reg comment text
@@ -189,7 +199,7 @@ class SocialCard extends Component {
             <div className="card-header">
               <div className="header-left">
                 <span className="author">{this.props.author}</span>
-                <span className="username-timestamp">@{this.props.author.trim().toLowerCase()} - {timestamp}</span>
+                <span className="username-timestamp">@{this.props.author.trim().toLowerCase()} - {timestamp} - parentId: {this.props.parentCommentId}</span>
               </div>
               <div className="header-right">
                 <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDropdown} size="sm">
@@ -213,20 +223,28 @@ class SocialCard extends Component {
             <div className="card-text">{commentTextBody}</div>
 
             <div className="card-footer">
-              <div className="comments">
-                <i className="far fa-comment"> </i>
-                {this.state.numComments}
+              <div className={"footer-reply" + showReply}>
+                <form>
+                  <input type="text" />
+                  <button type="submit">Reply</button>
+                </form>
               </div>
-              <div className={"retweets" + retweetClass}>
-                <i className="fas fa-retweet" onClick={this.toggleRetweetIcon}> </i>
-                {this.state.numRetweets}
-              </div>
-              <div className={"likes" + likedClass}>
-                <i className="fas fa-heart" onClick={this.toggleLikeIcon}> </i>
-                {this.props.numLikes}
-              </div>
-              <div className="message">
-                <i className="far fa-envelope"> </i>
+              <div className="footer-icons">
+                <div className="comments">
+                  <i className="far fa-comment" onClick={this.toggleReplyForm}> </i>
+                  {this.state.numComments}
+                </div>
+                <div className={"retweets" + retweetClass}>
+                  <i className="fas fa-retweet" onClick={this.toggleRetweetIcon}> </i>
+                  {this.state.numRetweets}
+                </div>
+                <div className={"likes" + likedClass}>
+                  <i className="fas fa-heart" onClick={this.toggleLikeIcon}> </i>
+                  {this.props.numLikes}
+                </div>
+                <div className="message">
+                  <i className="far fa-envelope"> </i>
+                </div>
               </div>
             </div>
           </div>

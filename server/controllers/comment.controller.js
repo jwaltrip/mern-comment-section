@@ -8,6 +8,8 @@ exports.test = function (req, res) {
 
 // callback fn for the GET '/all' route
 exports.comment_get_all = function (req, res) {
+  // exports.find_parent_comment_id();
+
   Comment.find({}, (err, comments) => {
     if (err) return next(err);
 
@@ -15,15 +17,17 @@ exports.comment_get_all = function (req, res) {
   });
 };
 
+exports.find_parent_comment_id = function (req, res) {
+  // check to  see if db var is available here
+  Comment.find({}).sort({"timestamp":-1}).limit(1).then(comment => {
+    console.log('latest comment', comment);
+  });
+};
+
 // callback function for the POST '/add' route
 /*TODO on add top level comment, increment parentCommentId +1 will need to get last inserted parent comment
  */
 exports.comment_add = function (req, res) {
-  // check to  see if db var is available here
-  // Comment.find({}).sort({"timestamp":-1}).limit(1).then(comment => {
-  //   console.log('latest comment', comment);
-  // });
-
 
   const comment = new Comment();
   // get author and commentText from url body

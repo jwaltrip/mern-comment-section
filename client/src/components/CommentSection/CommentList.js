@@ -49,6 +49,7 @@ class CommentList extends Component {
             return <SocialCard
                     key={idx}
                     id={comment._id}
+                    parentCommentId={comment.parentCommentId}
                     commentText={comment.commentText}
                     posted={comment.posted}
                     timestamp={comment.timestamp}
