@@ -16,8 +16,15 @@ exports.comment_get_all = function (req, res) {
 };
 
 // callback function for the POST '/add' route
-// TODO on add top level comment, increment parentCommentId +1
+/*TODO on add top level comment, increment parentCommentId +1 will need to get last inserted parent comment
+ */
 exports.comment_add = function (req, res) {
+  // check to  see if db var is available here
+  // Comment.find({}).sort({"timestamp":-1}).limit(1).then(comment => {
+  //   console.log('latest comment', comment);
+  // });
+
+
   const comment = new Comment();
   // get author and commentText from url body
   const { author, commentText, posted, timestamp } = req.body;

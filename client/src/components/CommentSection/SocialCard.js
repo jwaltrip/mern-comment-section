@@ -37,7 +37,12 @@ class SocialCard extends Component {
     fetch(`/comments/${this.props.id}`)
       .then(res => res.json())
       .then(comment => {
-        this.setState({ numLikes: comment.numLikes });
+        if (comment.numLikes > 0) {
+          this.setState({ numLikes: comment.numLikes, likeClicked: true });
+        } else {
+          this.setState({ numLikes: comment.numLikes });
+        }
+
       });
   }
 
@@ -142,8 +147,19 @@ class SocialCard extends Component {
     if (this.state.retweetClicked) retweetClass = ' clicked';
     if (this.state.likeClicked) likedClass = ' clicked';
 
+    // determine whether to show "Posted at:" or "Updated at:"
     // convert timestamp to Moment.fromNow()
-    const timestamp = Moment(this.props.timestamp).fromNow();
+    let timestamp;
+    let fromNow;
+    if (this.props.posted === this.props.timestamp || !this.props.posted) {
+      fromNow = Moment(this.props.posted).fromNow();
+      timestamp = "posted " + fromNow;
+    } else {
+      fromNow = Moment(this.props.timestamp).fromNow();
+      timestamp = "updated " + fromNow;
+    }
+
+
 
     // logic to check if comment is being edited
     // if so, show input form, if not, show reg comment text
