@@ -21,6 +21,7 @@ class SocialCard extends Component {
       isEditing: false,
       editedText: '',
       showCommentReply: false,
+      commentReplyEdit: '',
       error: null
     };
 
@@ -30,6 +31,7 @@ class SocialCard extends Component {
     this.toggleDropdown = this.toggleDropdown.bind(this);
     this.toggleEditForm = this.toggleEditForm.bind(this);
     this.toggleReplyForm = this.toggleReplyForm.bind(this);
+    this.updateReplyForm = this.updateReplyForm.bind(this);
     this.updateEditText = this.updateEditText.bind(this);
     this.submitEditText = this.submitEditText.bind(this);
     this.onSubmitDelete = this.onSubmitDelete.bind(this);
@@ -93,6 +95,11 @@ class SocialCard extends Component {
 
   toggleReplyForm() {
     this.setState({ showCommentReply: !this.state.showCommentReply });
+  }
+
+  updateReplyForm(e) {
+    e.preventDefault();
+    this.setState({ commentReplyEdit: e.target.value });
   }
 
   updateEditText(e) {
@@ -225,7 +232,7 @@ class SocialCard extends Component {
             <div className="card-footer">
               <div className={"footer-reply" + showReply}>
                 <form>
-                  <input type="text" />
+                  <input type="text" value={this.state.commentReplyEdit} onChange={this.updateReplyForm} />
                   <button type="submit">Reply</button>
                 </form>
               </div>
