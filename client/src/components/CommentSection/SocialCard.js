@@ -260,17 +260,17 @@ class SocialCard extends Component {
           </div>
         </div>
 
-        <CommentReply
-          id={23}
-          parentCommentId={1}
-          commentText="Test Reply"
-          posted="1 min ago"
-          timestamp="1 min ago"
-          author="Laurie"
-          numComments={0}
-          numRetweets={1}
-          numLikes={5}
-        />
+        {/*<CommentReply*/}
+          {/*id={23}*/}
+          {/*parentCommentId={1}*/}
+          {/*commentText="Test Reply"*/}
+          {/*posted="1 min ago"*/}
+          {/*timestamp="1 min ago"*/}
+          {/*author="Laurie"*/}
+          {/*numComments={0}*/}
+          {/*numRetweets={1}*/}
+          {/*numLikes={5}*/}
+        {/*/>*/}
 
         {this.state.error}
       </div>

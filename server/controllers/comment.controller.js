@@ -30,22 +30,37 @@ exports.find_parent_comment_id = function (req, res) {
 exports.comment_add = function (req, res) {
   // get largest previous maxParentID
   (async function() {
-    const oldMaxParentID = await exports.comment_find_greatest_parent_id();
+    // check to see if is a comment reply
+    // if it is, it will have parentCommentId in req.body
+    let { maxParentId } = req.body;
+    let newParentId;
 
-    console.log('max parent id', oldMaxParentID);
+    if (maxParentId) {
+      // if parent id is provided, then is a comment reply
+      // use the provided parent id
+      newParentId = maxParentId;
+    } else {
+      // if no parent id is provided, find last max parent id
+      // and increase value +1
+      newParentId = await exports.comment_find_greatest_parent_id() + 1;
+    }
+
+    // const oldMaxParentID = await exports.comment_find_greatest_parent_id();
+
+    console.log('new parent id', newParentId);
 
     const comment = new Comment();
     // get author and commentText from url body
     const { author, commentText, posted, timestamp } = req.body;
     // if either author or commentText is not present, res w error
-    if (!oldMaxParentID || !author || !commentText || !posted || !timestamp) {
+    if (!newParentId || !author || !commentText || !posted || !timestamp) {
       return res.json({
         success: false,
-        error: "You must provide an maxParentID, author, commentText, posted, and timestamp"
+        error: "You must provide an newParentId, author, commentText, posted, and timestamp"
       });
     }
 
-    comment.parentCommentId = oldMaxParentID + 1;
+    comment.parentCommentId = newParentId;
     comment.author = author;
     comment.commentText = commentText;
     comment.posted = posted;
