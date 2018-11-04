@@ -17,6 +17,22 @@ exports.comment_get_all = function (req, res) {
   });
 };
 
+// callback fn for the GET '/all_nested' route
+exports.comment_get_all_nested = function (req, res) {
+  Comment.find({})
+    .sort({
+      "parentCommentId": 1,
+      "isReply": 1
+    })
+    .exec()
+    .then(comments => {
+      res.send(comments);
+    })
+    .catch(err => {
+      res.json({ success: false, error: err });
+    })
+};
+
 exports.find_parent_comment_id = function (req, res) {
   // check to  see if db var is available here
   Comment.find({}).sort({"timestamp":-1}).limit(1).then(comment => {
@@ -25,8 +41,6 @@ exports.find_parent_comment_id = function (req, res) {
 };
 
 // callback function for the POST '/add' route
-/*TODO on add top level comment, increment parentCommentId +1 will need to get last inserted parent comment
- */
 exports.comment_add = function (req, res) {
   // get largest previous maxParentID
   (async function() {
@@ -51,7 +65,7 @@ exports.comment_add = function (req, res) {
 
     const comment = new Comment();
     // get author and commentText from url body
-    const { author, commentText, posted, timestamp } = req.body;
+    const { author, commentText, isReply, posted, timestamp } = req.body;
     // if either author or commentText is not present, res w error
     if (!newParentId || !author || !commentText || !posted || !timestamp) {
       return res.json({
@@ -63,6 +77,7 @@ exports.comment_add = function (req, res) {
     comment.parentCommentId = newParentId;
     comment.author = author;
     comment.commentText = commentText;
+    comment.isReply = !!(isReply);
     comment.posted = posted;
     comment.timestamp = timestamp;
 

@@ -22,6 +22,7 @@ const Schema = mongoose.Schema;
 let CommentSchema = new Schema({
   parentCommentId:	Number,
   commentText:	String,
+  isReply: { type: Boolean, default: false },
   author:	String,
   numLikes:	{ type: Number, default: 0 },
   posted:	Number,

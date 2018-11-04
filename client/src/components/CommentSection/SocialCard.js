@@ -107,6 +107,8 @@ class SocialCard extends Component {
   submitReplyForm(e) {
     e.preventDefault();
 
+    console.log('comment reply text', this.state.commentReplyEdit);
+
     fetch('/comments/add', {
       method: 'POST',
       headers: {
@@ -115,10 +117,11 @@ class SocialCard extends Component {
       },
       body: JSON.stringify({
         author: this.props.author,
-        commentText: this.props.commentText,
+        commentText: this.state.commentReplyEdit,
         posted: Date.now(),
         timestamp: Date.now(),
-        parentCommentId: this.props.parentCommentId
+        parentCommentId: this.props.parentCommentId,
+        isReply: true
       })
     })
       .then(res => res.json())
@@ -258,9 +261,9 @@ class SocialCard extends Component {
 
               <div className="card-footer">
                 <div className={"footer-reply" + showReply}>
-                  <form onSubmit={this.submitReplyForm}>
+                  <form>
                     <input type="text" value={this.state.commentReplyEdit} onChange={this.updateReplyForm} />
-                    <button type="submit">Reply</button>
+                    <button type="submit" onClick={this.submitReplyForm}>Reply</button>
                   </form>
                 </div>
                 <div className="footer-icons">

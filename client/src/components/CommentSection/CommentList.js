@@ -5,6 +5,7 @@ import './Comment.css';
 import Comment from "./Comment";
 import AddCommentForm from './AddCommentForm';
 import SocialCard from "./SocialCard";
+import CommentReply from "./CommentReply";
 
 class CommentList extends Component {
   constructor(props) {
@@ -32,7 +33,7 @@ class CommentList extends Component {
   }
 
   loadCommentsFromServer() {
-    fetch('/comments/all')
+    fetch('/comments/all_nested')
       .then(res => res.json())
       .then(comments => {
         this.setState({ comments: comments });
@@ -46,18 +47,37 @@ class CommentList extends Component {
         <div className="comment-list">
 
           {this.state.comments.map((comment, idx) => {
-            return <SocialCard
-                    key={idx}
-                    id={comment._id}
-                    parentCommentId={comment.parentCommentId}
-                    commentText={comment.commentText}
-                    posted={comment.posted}
-                    timestamp={comment.timestamp}
-                    author={comment.author}
-                    numComments={this.numComments}
-                    numRetweets={this.numRetweets}
-                    numLikes={comment.numLikes}
-                  />
+            // if top level comment, return SocialCard
+            if (!comment.isReply) {
+              return <SocialCard
+                key={idx}
+                id={comment._id}
+                parentCommentId={comment.parentCommentId}
+                commentText={comment.commentText}
+                posted={comment.posted}
+                timestamp={comment.timestamp}
+                author={comment.author}
+                numComments={this.numComments}
+                numRetweets={this.numRetweets}
+                numLikes={comment.numLikes}
+              />
+            }
+            // if comment reply, return CommentReply
+            else {
+              return <CommentReply
+                key={idx}
+                id={comment._id}
+                parentCommentId={comment.parentCommentId}
+                commentText={comment.commentText}
+                posted={comment.posted}
+                timestamp={comment.timestamp}
+                author={comment.author}
+                numComments={this.numComments}
+                numRetweets={this.numRetweets}
+                numLikes={comment.numLikes}
+              />
+            }
+
           })}
 
           <AddCommentForm />

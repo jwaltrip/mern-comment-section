@@ -10,6 +10,9 @@ router.get('/test', comment_controller.test);
 // GET - get all comments and id's
 router.get('/all', comment_controller.comment_get_all);
 
+// GET - get all nested comments
+router.get('/all_nested', comment_controller.comment_get_all_nested);
+
 // GET - get a comment by id
 router.get('/:id', comment_controller.comment_details);
 
