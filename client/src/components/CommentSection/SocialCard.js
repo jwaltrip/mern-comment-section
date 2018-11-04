@@ -33,6 +33,7 @@ class SocialCard extends Component {
     this.toggleEditForm = this.toggleEditForm.bind(this);
     this.toggleReplyForm = this.toggleReplyForm.bind(this);
     this.updateReplyForm = this.updateReplyForm.bind(this);
+    this.submitReplyForm = this.submitReplyForm.bind(this);
     this.updateEditText = this.updateEditText.bind(this);
     this.submitEditText = this.submitEditText.bind(this);
     this.onSubmitDelete = this.onSubmitDelete.bind(this);
@@ -101,6 +102,30 @@ class SocialCard extends Component {
   updateReplyForm(e) {
     e.preventDefault();
     this.setState({ commentReplyEdit: e.target.value });
+  }
+
+  submitReplyForm(e) {
+    e.preventDefault();
+
+    fetch('/comments/add', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        author: this.props.author,
+        commentText: this.props.commentText,
+        posted: Date.now(),
+        timestamp: Date.now(),
+        parentCommentId: this.props.parentCommentId
+      })
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (!res.success) this.setState({ error: res.error });
+        else this.setState({ commentReplyEdit: '', showCommentReply: false, error: null });
+      });
   }
 
   updateEditText(e) {
@@ -233,7 +258,7 @@ class SocialCard extends Component {
 
               <div className="card-footer">
                 <div className={"footer-reply" + showReply}>
-                  <form>
+                  <form onSubmit={this.submitReplyForm}>
                     <input type="text" value={this.state.commentReplyEdit} onChange={this.updateReplyForm} />
                     <button type="submit">Reply</button>
                   </form>

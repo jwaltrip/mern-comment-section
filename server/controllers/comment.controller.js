@@ -32,13 +32,13 @@ exports.comment_add = function (req, res) {
   (async function() {
     // check to see if is a comment reply
     // if it is, it will have parentCommentId in req.body
-    let { maxParentId } = req.body;
+    let { parentCommentId } = req.body;
     let newParentId;
 
-    if (maxParentId) {
+    if (parentCommentId) {
       // if parent id is provided, then is a comment reply
       // use the provided parent id
-      newParentId = maxParentId;
+      newParentId = parentCommentId;
     } else {
       // if no parent id is provided, find last max parent id
       // and increase value +1
