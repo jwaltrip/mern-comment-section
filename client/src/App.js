@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import './App.css';
 import CommentList from "./components/CommentSection/CommentList";
-// import SocialCard from "./components/CommentSection/SocialCard";
+// import CommentReply from "./components/CommentSection/CommentReply";
 
 class App extends Component {
   render() {
     return (
       <div className="App">
         <CommentList/>
-        {/*<SocialCard />*/}
+        {/*<CommentReply />*/}
       </div>
     );
   }

@@ -4,11 +4,10 @@ import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
 
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
-import './SocialCard.css';
+import './CommentReply.css';
 import Avatar from "./Avatar";
-import CommentReply from "./CommentReply";
 
-class SocialCard extends Component {
+class CommentReply extends Component {
   constructor(props) {
     super(props);
 
@@ -39,16 +38,16 @@ class SocialCard extends Component {
   }
 
   componentDidMount() {
-    fetch(`/comments/${this.props.id}`)
-      .then(res => res.json())
-      .then(comment => {
-        if (comment.numLikes > 0) {
-          this.setState({ numLikes: comment.numLikes, likeClicked: true });
-        } else {
-          this.setState({ numLikes: comment.numLikes });
-        }
-
-      });
+    // fetch(`/comments/${this.props.id}`)
+    //   .then(res => res.json())
+    //   .then(comment => {
+    //     if (comment.numLikes > 0) {
+    //       this.setState({ numLikes: comment.numLikes, likeClicked: true });
+    //     } else {
+    //       this.setState({ numLikes: comment.numLikes });
+    //     }
+    //
+    //   });
   }
 
   toggleRetweetIcon() {
@@ -184,96 +183,55 @@ class SocialCard extends Component {
     let commentTextBody = this.props.commentText;
     if (this.state.isEditing) {
       commentTextBody = <div className="edit-form">
-                          <form onSubmit={this.submitEditText}>
-                            <input
-                              type="text"
-                              placeholder={this.props.commentText}
-                              value={this.state.editedText}
-                              onChange={this.updateEditText}
-                            />
-                            <button type="submit">Edit</button>
-                          </form>
-                          <i className="fa fa-window-close" aria-hidden="true" onClick={this.toggleEditForm}> </i>
-                        </div>;
+        <form onSubmit={this.submitEditText}>
+          <input
+            type="text"
+            placeholder={this.props.commentText}
+            value={this.state.editedText}
+            onChange={this.updateEditText}
+          />
+          <button type="submit">Edit</button>
+        </form>
+        <i className="fa fa-window-close" aria-hidden="true" onClick={this.toggleEditForm}> </i>
+      </div>;
     }
 
     return (
-      <div>
-        <div className="card">
-          <div className="card-container">
-            <div className="card-left">
-              <Avatar />
+      <div className="comment-reply">
+        <div className="reply-container">
+          <div className="reply-left"> <Avatar/> </div>
+          <div className="reply-right">
+            <div className="reply-header">
+              <div className="header-left">
+                <span className="author">{this.props.author}</span>
+                <span className="username-timestamp">@{this.props.author.trim().toLowerCase()}</span>
+              </div>
+              <div className="header-right">
+                <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDropdown} size="sm">
+                  <DropdownToggle
+                    tag="span"
+                    onClick={this.toggle}
+                    data-toggle="dropdown"
+                    aria-expanded={this.state.dropdownOpen}
+                  >
+                    <i className="fas fa-angle-down edit-menu"> </i>
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    <DropdownItem onClick={this.toggleEditForm}>Edit</DropdownItem>
+                    <DropdownItem divider />
+                    <DropdownItem onClick={this.onSubmitDelete}>Delete</DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </div>
             </div>
-            <div className="card-right">
-              <div className="card-header">
-                <div className="header-left">
-                  <span className="author">{this.props.author}</span>
-                  <span className="username-timestamp">@{this.props.author.trim().toLowerCase()} - {timestamp} - parentId: {this.props.parentCommentId}</span>
-                </div>
-                <div className="header-right">
-                  <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDropdown} size="sm">
-                    <DropdownToggle
-                      tag="span"
-                      onClick={this.toggle}
-                      data-toggle="dropdown"
-                      aria-expanded={this.state.dropdownOpen}
-                    >
-                      <i className="fas fa-angle-down edit-menu"> </i>
-                    </DropdownToggle>
-                    <DropdownMenu>
-                      <DropdownItem onClick={this.toggleEditForm}>Edit</DropdownItem>
-                      <DropdownItem divider />
-                      <DropdownItem onClick={this.onSubmitDelete}>Delete</DropdownItem>
-                    </DropdownMenu>
-                  </Dropdown>
-                </div>
-              </div>
-
-              <div className="card-text">{commentTextBody}</div>
-
-              <div className="card-footer">
-                <div className={"footer-reply" + showReply}>
-                  <form>
-                    <input type="text" value={this.state.commentReplyEdit} onChange={this.updateReplyForm} />
-                    <button type="submit">Reply</button>
-                  </form>
-                </div>
-                <div className="footer-icons">
-                  <div className="comments">
-                    <i className="far fa-comment" onClick={this.toggleReplyForm}> </i>
-                    {this.state.numComments}
-                  </div>
-                  <div className={"retweets" + retweetClass}>
-                    <i className="fas fa-retweet" onClick={this.toggleRetweetIcon}> </i>
-                    {this.state.numRetweets}
-                  </div>
-                  <div className={"likes" + likedClass}>
-                    <i className="fas fa-heart" onClick={this.toggleLikeIcon}> </i>
-                    {this.props.numLikes}
-                  </div>
-                  <div className="message">
-                    <i className="far fa-envelope"> </i>
-                  </div>
-                </div>
-              </div>
+            <div className="reply-text">
+              {this.props.commentText}
             </div>
           </div>
         </div>
-
-        <CommentReply
-          id={23}
-          parentCommentId={1}
-          commentText="Test Reply"
-          posted="1 min ago"
-          timestamp="1 min ago"
-          author="Laurie"
-          numComments={0}
-          numRetweets={1}
-          numLikes={5}
-        />
       </div>
     );
   }
 }
 
-export default SocialCard;
+export default CommentReply;
