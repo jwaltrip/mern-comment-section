@@ -28,28 +28,36 @@ exports.find_parent_comment_id = function (req, res) {
 /*TODO on add top level comment, increment parentCommentId +1 will need to get last inserted parent comment
  */
 exports.comment_add = function (req, res) {
+  // get largest previous maxParentID
+  (async function() {
+    const oldMaxParentID = await exports.comment_find_greatest_parent_id();
 
-  const comment = new Comment();
-  // get author and commentText from url body
-  const { author, commentText, posted, timestamp } = req.body;
-  // if either author or commentText is not present, res w error
-  if (!author || !commentText || !posted || !timestamp) {
-    return res.json({
-      success: false,
-      error: "You must provide an author, commentText, posted, and timestamp"
+    console.log('max parent id', oldMaxParentID);
+
+    const comment = new Comment();
+    // get author and commentText from url body
+    const { author, commentText, posted, timestamp } = req.body;
+    // if either author or commentText is not present, res w error
+    if (!oldMaxParentID || !author || !commentText || !posted || !timestamp) {
+      return res.json({
+        success: false,
+        error: "You must provide an maxParentID, author, commentText, posted, and timestamp"
+      });
+    }
+
+    comment.parentCommentId = oldMaxParentID + 1;
+    comment.author = author;
+    comment.commentText = commentText;
+    comment.posted = posted;
+    comment.timestamp = timestamp;
+
+    comment.save(err => {
+      if (err) return res.json({ success: false, error: err });
+
+      return res.json({ success: true });
     });
-  }
+  })();
 
-  comment.author = author;
-  comment.commentText = commentText;
-  comment.posted = posted;
-  comment.timestamp = timestamp;
-
-  comment.save(err => {
-    if (err) return next(err);
-
-    return res.json({ success: true });
-  })
 };
 
 // TODO create comment_add_reply route
@@ -110,4 +118,22 @@ exports.comment_update_likes = function (req, res) {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true });
   });
+};
+
+// TODO create fn to find greatest parentId num
+// finds max parent id for new comment insertion
+exports.comment_find_greatest_parent_id = function () {
+  return Comment.find({})
+    .sort({"parentCommentId": -1})
+    .limit(1)
+    .exec()
+    .then((comment) => {
+      // else return res.json({ success: true, maxParentId: parentId });
+      console.log('max parent id comment', comment[0].parentCommentId);
+      return comment[0].parentCommentId;
+    })
+    .catch(err => {
+      return err;
+    });
+
 };

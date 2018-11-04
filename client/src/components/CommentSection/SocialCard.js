@@ -271,6 +271,8 @@ class SocialCard extends Component {
           numRetweets={1}
           numLikes={5}
         />
+
+        {this.state.error}
       </div>
     );
   }
