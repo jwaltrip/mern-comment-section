@@ -15,24 +15,23 @@ class SocialCard extends Component {
     this.state = {
       retweetClicked: false,
       likeClicked: false,
-      numComments: this.getRandomInt(0, 100),
-      numRetweets: this.getRandomInt(0, 100),
       numLikes: 0,
       dropdownOpen: false,
       isEditing: false,
       editedText: '',
-      showCommentReply: false,
+      showCommentReply: true,
       commentReplyEdit: '',
+      replyAuthor: '',
       error: null
     };
 
     this.toggleRetweetIcon = this.toggleRetweetIcon.bind(this);
     this.toggleLikeIcon = this.toggleLikeIcon.bind(this);
-    this.getRandomInt = this.getRandomInt.bind(this);
     this.toggleDropdown = this.toggleDropdown.bind(this);
     this.toggleEditForm = this.toggleEditForm.bind(this);
     this.toggleReplyForm = this.toggleReplyForm.bind(this);
     this.updateReplyForm = this.updateReplyForm.bind(this);
+    this.updateReplyAuthorForm = this.updateReplyAuthorForm.bind(this);
     this.submitReplyForm = this.submitReplyForm.bind(this);
     this.updateEditText = this.updateEditText.bind(this);
     this.submitEditText = this.submitEditText.bind(this);
@@ -104,6 +103,11 @@ class SocialCard extends Component {
     this.setState({ commentReplyEdit: e.target.value });
   }
 
+  updateReplyAuthorForm(e) {
+    e.preventDefault();
+    this.setState({ replyAuthor: e.target.value });
+  }
+
   submitReplyForm(e) {
     e.preventDefault();
 
@@ -116,7 +120,7 @@ class SocialCard extends Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        author: this.props.author,
+        author: this.state.replyAuthor,
         commentText: this.state.commentReplyEdit,
         posted: Date.now(),
         timestamp: Date.now(),
@@ -178,15 +182,9 @@ class SocialCard extends Component {
       });
   }
 
-  getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
   render() {
-    // logic to determine classname of retweet and like icon
-    let retweetClass;
+    // logic to determine classname of like icon
     let likedClass;
-    if (this.state.retweetClicked) retweetClass = ' clicked';
     if (this.state.likeClicked) likedClass = ' clicked';
 
     // determine whether to show "Posted at:" or "Updated at:"
@@ -262,18 +260,15 @@ class SocialCard extends Component {
               <div className="card-footer">
                 <div className={"footer-reply" + showReply}>
                   <form>
-                    <input type="text" value={this.state.commentReplyEdit} onChange={this.updateReplyForm} />
+                    <input type="text" placeholder="Author" value={this.state.replyAuthor} onChange={this.updateReplyAuthorForm} />
+                    <input type="text" placeholder="Comment" value={this.state.commentReplyEdit} onChange={this.updateReplyForm} />
                     <button type="submit" onClick={this.submitReplyForm}>Reply</button>
                   </form>
                 </div>
                 <div className="footer-icons">
                   <div className="comments">
                     <i className="far fa-comment" onClick={this.toggleReplyForm}> </i>
-                    {this.state.numComments}
-                  </div>
-                  <div className={"retweets" + retweetClass}>
-                    <i className="fas fa-retweet" onClick={this.toggleRetweetIcon}> </i>
-                    {this.state.numRetweets}
+                    {this.props.numComments}
                   </div>
                   <div className={"likes" + likedClass}>
                     <i className="fas fa-heart" onClick={this.toggleLikeIcon}> </i>
@@ -287,18 +282,6 @@ class SocialCard extends Component {
             </div>
           </div>
         </div>
-
-        {/*<CommentReply*/}
-          {/*id={23}*/}
-          {/*parentCommentId={1}*/}
-          {/*commentText="Test Reply"*/}
-          {/*posted="1 min ago"*/}
-          {/*timestamp="1 min ago"*/}
-          {/*author="Laurie"*/}
-          {/*numComments={0}*/}
-          {/*numRetweets={1}*/}
-          {/*numLikes={5}*/}
-        {/*/>*/}
 
         {this.state.error}
       </div>

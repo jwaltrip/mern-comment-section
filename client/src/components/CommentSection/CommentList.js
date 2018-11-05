@@ -17,6 +17,7 @@ class CommentList extends Component {
     this.pollInterval = null;
 
     this.loadCommentsFromServer = this.loadCommentsFromServer.bind(this);
+    this.getNumCommentReplies = this.getNumCommentReplies.bind(this);
   }
 
   componentDidMount() {
@@ -40,6 +41,14 @@ class CommentList extends Component {
       });
   }
 
+  getNumCommentReplies(parentId) {
+    const filteredRepliesByParent = this.state.comments.filter((comment, idx) => {
+      return comment.parentCommentId === parentId && comment.isReply;
+    });
+
+    return filteredRepliesByParent.length;
+  }
+
   render() {
     return (
       <div>
@@ -57,7 +66,7 @@ class CommentList extends Component {
                 posted={comment.posted}
                 timestamp={comment.timestamp}
                 author={comment.author}
-                numComments={this.numComments}
+                numComments={this.getNumCommentReplies(comment.parentCommentId)}
                 numRetweets={this.numRetweets}
                 numLikes={comment.numLikes}
               />

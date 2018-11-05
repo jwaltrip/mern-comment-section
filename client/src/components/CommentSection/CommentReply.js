@@ -204,7 +204,7 @@ class CommentReply extends Component {
             <div className="reply-header">
               <div className="header-left">
                 <span className="author">{this.props.author}</span>
-                <span className="username-timestamp">@{this.props.author.trim().toLowerCase()}</span>
+                <span className="username-timestamp">@{this.props.author.trim().toLowerCase()} - {timestamp} - pId:{this.props.parentCommentId}</span>
               </div>
               <div className="header-right">
                 <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDropdown} size="sm">
